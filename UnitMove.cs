@@ -35,25 +35,27 @@ public class UnitMove : MonoBehaviour {
     void Update() {
 
         SetNewTarget();
-        if(canSearch) {
-            if(!previousNode) {
-                closedList = transform.GetComponent<Pathfinding>().Pathfinder(GameObject.Find("Level").GetComponent<GameControl>().startNode);
+        if(targetNode) {
+            if(canSearch) {
+                if(!previousNode) {
+                    closedList = transform.GetComponent<Pathfinding>().Pathfinder(GameObject.Find("Level").GetComponent<GameControl>().startNode);
+                }
+                else {
+                    targetReached = false;
+                    closedList = transform.GetComponent<Pathfinding>().Pathfinder(previousNode);
+                    MoveToTarget();
+                }
+                canSearch = false;
             }
-            else {
-                targetReached = false;
-                closedList = transform.GetComponent<Pathfinding>().Pathfinder(previousNode);
+
+            if(!targetReached) {
                 MoveToTarget();
-            }
-            canSearch = false;
-        }
 
-        if(!targetReached) {
-            MoveToTarget();
-
-            if(transform.position == closedList[closedList.Count - 1].transform.position) {
-                targetReached = true;
-                closedList.Clear();
-                nextCell = 0;
+                if(transform.position == closedList[closedList.Count - 1].transform.position) {
+                    targetReached = true;
+                    closedList.Clear();
+                    nextCell = 0;
+                }
             }
         }
     }
