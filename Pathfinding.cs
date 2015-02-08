@@ -6,12 +6,9 @@ public class Pathfinding : MonoBehaviour {
 
     public GameObject currentNode;
     public GameObject nextNode;
-    public GameObject startNode;
     public GameObject targetNode;
 
-    public List<GameObject> closedList = new List<GameObject>();
     public List<GameObject> nodeList = new List<GameObject>();
-    public List<GameObject> openList = new List<GameObject>();
 
     public int distanceMoved = 0;
     public int minNodeValue;
@@ -19,14 +16,23 @@ public class Pathfinding : MonoBehaviour {
 
 	void Start() {
 
-        openList.Clear();
-        closedList.Clear();
         nodeList = GameObject.Find("Level").GetComponent<BuildMap>().nodeList;
-        targetNode = transform.GetComponent<UnitMove>().targetNode;
+    }
+
+
+    void Update() {
+        if(transform.GetComponent<UnitMove>().targetNode) {
+            targetNode = transform.GetComponent<UnitMove>().targetNode;
+        }
     }
 
 
     public List<GameObject> Pathfinder(GameObject currentNode) {
+
+        distanceMoved = 0;
+        minNodeValue = 0;
+        List<GameObject> closedList = new List<GameObject>();
+        List<GameObject> openList = new List<GameObject>();
 
         while(currentNode != targetNode) {
             if(openList.Count == 0 && closedList.Count == 0) {
@@ -34,15 +40,14 @@ public class Pathfinding : MonoBehaviour {
             }
 
             List<GameObject> adjacentNodes = FindAdjacentNodes(currentNode, nodeList);
-
             nextNode = null;
             distanceMoved++;
 
             for (var i = 0; i < adjacentNodes.Count; i++) {
                 if(!closedList.Contains(adjacentNodes[i])) {
                     if(!openList.Contains(adjacentNodes[i])) {
-                        adjacentNodes[i].GetComponent<Node>().moveCost = distanceMoved;
                         int distanceFromTarget = adjacentNodes[i].GetComponent<Node>().FindDistanceToTarget(adjacentNodes[i].GetComponent<Node>().x, adjacentNodes[i].GetComponent<Node>().y, targetNode);
+                        adjacentNodes[i].GetComponent<Node>().moveCost = distanceMoved;
                         openList.Add(adjacentNodes[i]);
                         if(nextNode == null) {
                             nextNode = adjacentNodes[i];
@@ -67,6 +72,7 @@ public class Pathfinding : MonoBehaviour {
 
     List<GameObject> FindAdjacentNodes(GameObject node, List<GameObject> nodeList) {
 
+        Debug.Log(node);
         int currentNodeX = node.GetComponent<Node>().x;
         int currentNodeY = node.GetComponent<Node>().y;
 

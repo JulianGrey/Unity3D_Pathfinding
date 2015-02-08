@@ -22,12 +22,11 @@ public class UnitMove : MonoBehaviour {
     void Start() {
 
         nodeList = GameObject.Find("Level").GetComponent<BuildMap>().nodeList;
-        targetNode = nodeList.Find(node => node.GetComponent<Node>().x == 4 && node.GetComponent<Node>().y == 3);
         transform.GetComponent<Pathfinding>().enabled = true;
     }
 
 
-    void OnTriggerEnter(Collider other){
+    void OnTriggerEnter(Collider other) {
 
         previousNode = other.gameObject;
     }
@@ -35,25 +34,27 @@ public class UnitMove : MonoBehaviour {
 
     void Update() {
 
+        SetNewTarget();
         if(canSearch) {
-            if(previousNode) {
-                closedList = transform.GetComponent<Pathfinding>().Pathfinder(previousNode);
+            if(!previousNode) {
+                closedList = transform.GetComponent<Pathfinding>().Pathfinder(GameObject.Find("Level").GetComponent<GameControl>().startNode);
             }
             else {
-                closedList = transform.GetComponent<Pathfinding>().Pathfinder(GameObject.Find("Level").GetComponent<GameControl>().startNode);
+                targetReached = false;
+                closedList = transform.GetComponent<Pathfinding>().Pathfinder(previousNode);
+                MoveToTarget();
             }
             canSearch = false;
         }
 
-        if(transform.position == closedList[closedList.Count - 1].transform.position) {
-            targetReached = true;
-        }
-        else {
-            targetReached = false;
-        }
-
         if(!targetReached) {
             MoveToTarget();
+
+            if(transform.position == closedList[closedList.Count - 1].transform.position) {
+                targetReached = true;
+                closedList.Clear();
+                nextCell = 0;
+            }
         }
     }
 
@@ -66,6 +67,23 @@ public class UnitMove : MonoBehaviour {
 
         if(transform.position == closedList[nextCell].transform.position) {
             nextCell++;
+        }
+    }
+
+
+    void SetNewTarget() {
+
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if(Input.GetMouseButtonDown(1)) {
+            if(Physics.Raycast(ray, out hit)) {
+                if(hit.collider.tag == "Node" && hit.collider.gameObject.GetComponent<Node>().walkable) {
+                    nextCell = 0;
+                    canSearch = true;
+                    targetNode = hit.collider.gameObject;
+                }
+            }
         }
     }
 }
