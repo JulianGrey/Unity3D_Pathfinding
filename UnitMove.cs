@@ -49,12 +49,12 @@ public class UnitMove : MonoBehaviour {
         }
 
         if(!targetReached) {
-            MoveUnit();
+            MoveToTarget();
         }
     }
 
 
-    void MoveUnit() {
+    void MoveToTarget() {
 
         float step = moveSpeed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, closedList[nextCell].transform.position, step);
