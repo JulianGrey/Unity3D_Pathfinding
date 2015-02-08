@@ -16,22 +16,19 @@ public class Pathfinding : MonoBehaviour {
     public int distanceMoved = 0;
     public int minNodeValue;
 
-    public bool pathFound = false;
-
 
 	void Start() {
 
         openList.Clear();
         closedList.Clear();
         nodeList = GameObject.Find("Level").GetComponent<BuildMap>().nodeList;
-        startNode = GameObject.Find("Level").GetComponent<GameControl>().startNode;
         targetNode = GameObject.Find("Level").GetComponent<GameControl>().targetNode;
-        currentNode = nodeList.Find(node => node == startNode);
     }
 
 
-    public void Pathfinder() {
-        if(!pathFound) {
+    public List<GameObject> Pathfinder(GameObject currentNode) {
+
+        while(currentNode != targetNode) {
             if(openList.Count == 0 && closedList.Count == 0) {
                 closedList.Add(currentNode);
             }
@@ -62,11 +59,8 @@ public class Pathfinding : MonoBehaviour {
             closedList.Add(nextNode);
             openList.Remove(nextNode);
             currentNode = nextNode;
-
-            if(currentNode == targetNode) {
-                pathFound = true;
-            }
         }
+        return closedList;
     }
 
 

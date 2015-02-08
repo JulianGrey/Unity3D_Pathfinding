@@ -4,33 +4,43 @@ using System.Collections.Generic;
 
 public class UnitMoveScript : MonoBehaviour {
 
-    public GameObject previousCell;
-    
+    public GameObject previousNode;
+
     public List<GameObject> closedList = new List<GameObject>();
-    
+
     public int nextCell = 0;
-    
+
     public float moveSpeed = 3.0f;
-    
+
+    public bool canSearch = true;
     public bool pathFound = false;
     public bool targetReached = false;
 
 
     void Start() {
 
-        closedList = transform.GetComponent<Pathfinding>().closedList;
+        transform.GetComponent<Pathfinding>().enabled = true;
     }
 
 
     void OnTriggerEnter(Collider other){
 
-        previousCell = other.gameObject;
+        previousNode = other.gameObject;
     }
 
 
     void Update() {
-        
-        transform.GetComponent<Pathfinding>().Pathfinder();
+
+        if(canSearch){
+            if(previousNode) {
+                closedList = transform.GetComponent<Pathfinding>().Pathfinder(previousNode);
+            }
+            else {
+                closedList = transform.GetComponent<Pathfinding>().Pathfinder(GameObject.Find("Level").GetComponent<GameControl>().startNode);
+            }
+            canSearch = false;
+        }
+
         if(transform.position == closedList[closedList.Count - 1].transform.position) {
             targetReached = true;
         }
