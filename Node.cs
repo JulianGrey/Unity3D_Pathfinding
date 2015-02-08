@@ -11,7 +11,7 @@ public class Node : MonoBehaviour {
     public int x;
     public int y;
 
-    // public bool walkable = true;
+    public bool walkable = true;
 
 
     void Update() {
