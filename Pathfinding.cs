@@ -72,7 +72,6 @@ public class Pathfinding : MonoBehaviour {
 
     List<GameObject> FindAdjacentNodes(GameObject node, List<GameObject> nodeList) {
 
-        Debug.Log(node);
         int currentNodeX = node.GetComponent<Node>().x;
         int currentNodeY = node.GetComponent<Node>().y;
 
