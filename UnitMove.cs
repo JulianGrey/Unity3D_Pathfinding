@@ -5,8 +5,10 @@ using System.Collections.Generic;
 public class UnitMove : MonoBehaviour {
 
     public GameObject previousNode;
+    public GameObject targetNode;
 
     public List<GameObject> closedList = new List<GameObject>();
+    public List<GameObject> nodeList = new List<GameObject>();
 
     public int nextCell = 0;
 
@@ -19,6 +21,8 @@ public class UnitMove : MonoBehaviour {
 
     void Start() {
 
+        nodeList = GameObject.Find("Level").GetComponent<BuildMap>().nodeList;
+        targetNode = nodeList.Find(node => node.GetComponent<Node>().x == 4 && node.GetComponent<Node>().y == 3);
         transform.GetComponent<Pathfinding>().enabled = true;
     }
 

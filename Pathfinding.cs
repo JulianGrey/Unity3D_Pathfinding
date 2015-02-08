@@ -22,7 +22,7 @@ public class Pathfinding : MonoBehaviour {
         openList.Clear();
         closedList.Clear();
         nodeList = GameObject.Find("Level").GetComponent<BuildMap>().nodeList;
-        targetNode = GameObject.Find("Level").GetComponent<GameControl>().targetNode;
+        targetNode = transform.GetComponent<UnitMove>().targetNode;
     }
 
 
@@ -42,15 +42,16 @@ public class Pathfinding : MonoBehaviour {
                 if(!closedList.Contains(adjacentNodes[i])) {
                     if(!openList.Contains(adjacentNodes[i])) {
                         adjacentNodes[i].GetComponent<Node>().moveCost = distanceMoved;
+                        int distanceFromTarget = adjacentNodes[i].GetComponent<Node>().FindDistanceToTarget(adjacentNodes[i].GetComponent<Node>().x, adjacentNodes[i].GetComponent<Node>().y, targetNode);
                         openList.Add(adjacentNodes[i]);
                         if(nextNode == null) {
                             nextNode = adjacentNodes[i];
-                            minNodeValue = adjacentNodes[i].GetComponent<Node>().moveCost + adjacentNodes[i].GetComponent<Node>().distanceFromTarget;
+                            minNodeValue = adjacentNodes[i].GetComponent<Node>().moveCost + distanceFromTarget;
                         }
                         else {
-                            if((adjacentNodes[i].GetComponent<Node>().moveCost + adjacentNodes[i].GetComponent<Node>().distanceFromTarget) < minNodeValue) {
+                            if((adjacentNodes[i].GetComponent<Node>().moveCost + distanceFromTarget) < minNodeValue) {
                                 nextNode = adjacentNodes[i];
-                                minNodeValue = adjacentNodes[i].GetComponent<Node>().moveCost + adjacentNodes[i].GetComponent<Node>().distanceFromTarget;
+                                minNodeValue = adjacentNodes[i].GetComponent<Node>().moveCost + distanceFromTarget;
                             }
                         }
                     }
