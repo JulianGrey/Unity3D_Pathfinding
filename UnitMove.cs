@@ -37,14 +37,9 @@ public class UnitMove : MonoBehaviour {
         SetNewTarget();
         if(targetNode) {
             if(canSearch) {
-                if(!previousNode) {
-                    closedList = transform.GetComponent<Pathfinding>().Pathfinder(GameObject.Find("Level").GetComponent<GameControl>().startNode);
-                }
-                else {
-                    targetReached = false;
-                    closedList = transform.GetComponent<Pathfinding>().Pathfinder(previousNode);
-                    MoveToTarget();
-                }
+                closedList = transform.GetComponent<Pathfinding>().Pathfinder(previousNode);
+                Debug.Log(closedList.Count);
+                MoveToTarget();
                 canSearch = false;
             }
 
@@ -54,7 +49,6 @@ public class UnitMove : MonoBehaviour {
                 if(transform.position == closedList[closedList.Count - 1].transform.position) {
                     targetReached = true;
                     closedList.Clear();
-                    nextCell = 0;
                 }
             }
         }
@@ -82,6 +76,7 @@ public class UnitMove : MonoBehaviour {
             if(Physics.Raycast(ray, out hit)) {
                 if(hit.collider.tag == "Node" && hit.collider.gameObject.GetComponent<Node>().walkable) {
                     nextCell = 0;
+                    targetReached = false;
                     canSearch = true;
                     targetNode = hit.collider.gameObject;
                 }
