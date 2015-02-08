@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UnitMoveScript : MonoBehaviour {
+public class UnitMove : MonoBehaviour {
 
     public GameObject previousNode;
 
@@ -31,7 +31,7 @@ public class UnitMoveScript : MonoBehaviour {
 
     void Update() {
 
-        if(canSearch){
+        if(canSearch) {
             if(previousNode) {
                 closedList = transform.GetComponent<Pathfinding>().Pathfinder(previousNode);
             }
