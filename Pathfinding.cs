@@ -20,13 +20,6 @@ public class Pathfinding : MonoBehaviour {
     }
 
 
-    void Update() {
-        if(transform.GetComponent<UnitMove>().targetNode) {
-            targetNode = transform.GetComponent<UnitMove>().targetNode;
-        }
-    }
-
-
     public List<GameObject> Pathfinder(GameObject currentNode) {
 
         distanceMoved = 0;

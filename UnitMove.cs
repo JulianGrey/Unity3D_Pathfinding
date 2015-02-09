@@ -37,8 +37,8 @@ public class UnitMove : MonoBehaviour {
         SetNewTarget();
         if(targetNode) {
             if(canSearch) {
+                transform.GetComponent<Pathfinding>().targetNode = targetNode;
                 closedList = transform.GetComponent<Pathfinding>().Pathfinder(previousNode);
-                Debug.Log(closedList.Count);
                 MoveToTarget();
                 canSearch = false;
             }
