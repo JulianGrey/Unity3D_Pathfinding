@@ -9,8 +9,6 @@ public class Pathfinding : MonoBehaviour {
 
     public List<GameObject> nodeList = new List<GameObject>();
 
-    public int distanceMoved = 0;
-
 
     void Start() {
 
@@ -19,8 +17,6 @@ public class Pathfinding : MonoBehaviour {
 
 
     public List<GameObject> Pathfinder(GameObject currentNode) {
-
-        distanceMoved = 0;
 
         GameObject initialNode = currentNode;
 
@@ -36,14 +32,18 @@ public class Pathfinding : MonoBehaviour {
             List<GameObject> adjacentNodes = FindAdjacentNodes(currentNode, nodeList, openList, closedList);
             int minNodeValue = 0;
             nextNode = null;
-            distanceMoved++;
 
             for (var i = 0; i < adjacentNodes.Count; i++) {
                 int distanceFromTarget = adjacentNodes[i].GetComponent<Node>().FindDistanceToTarget(adjacentNodes[i].GetComponent<Node>().x, adjacentNodes[i].GetComponent<Node>().y, targetNode);
                 adjacentNodes[i].GetComponent<Node>().parentNode = currentNode;
-                adjacentNodes[i].GetComponent<Node>().distanceMoved = distanceMoved;
+                if(currentNode.GetComponent<Node>().parentNode != null) {
+                    adjacentNodes[i].GetComponent<Node>().distanceMoved = currentNode.GetComponent<Node>().distanceMoved + 1;
+                }
+                else {
+                    adjacentNodes[i].GetComponent<Node>().distanceMoved = 1;
+                }
                 adjacentNodes[i].GetComponent<Node>().distanceFromTarget = distanceFromTarget;
-                adjacentNodes[i].GetComponent<Node>().moveCost = distanceMoved + distanceFromTarget;
+                adjacentNodes[i].GetComponent<Node>().moveCost = adjacentNodes[i].GetComponent<Node>().distanceMoved + distanceFromTarget;
                 openList.Add(adjacentNodes[i]);
                 minNodeValue = GetLowestNodeValue(openList);
             }
@@ -111,7 +111,27 @@ public class Pathfinding : MonoBehaviour {
                 nextNodeList.Add(openList[i]);
             }
         }
-        return nextNodeList[nextNodeList.Count - 1];
+        if(nextNodeList.Count > 1) {
+            int minDistanceMoved = 0;
+            GameObject consideredNode = null;
+
+            for(var i = 0; i < nextNodeList.Count; i++) {
+                if(i == 0) {
+                    minDistanceMoved = nextNodeList[i].GetComponent<Node>().distanceMoved;
+                    consideredNode = nextNodeList[i];
+                }
+                else {
+                    if(nextNodeList[i].GetComponent<Node>().distanceMoved < minDistanceMoved) {
+                        minDistanceMoved = nextNodeList[i].GetComponent<Node>().distanceMoved;
+                        consideredNode = nextNodeList[i];
+                    }
+                }
+            }
+            return consideredNode;
+        }
+        else {
+            return nextNodeList[nextNodeList.Count - 1];
+        }
     }
 
 
