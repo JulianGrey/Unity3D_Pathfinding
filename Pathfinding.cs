@@ -40,6 +40,7 @@ public class Pathfinding : MonoBehaviour {
                 if(!closedList.Contains(adjacentNodes[i])) {
                     if(!openList.Contains(adjacentNodes[i])) {
                         int distanceFromTarget = adjacentNodes[i].GetComponent<Node>().FindDistanceToTarget(adjacentNodes[i].GetComponent<Node>().x, adjacentNodes[i].GetComponent<Node>().y, targetNode);
+                        adjacentNodes[i].GetComponent<Node>().parentNode = currentNode;
                         adjacentNodes[i].GetComponent<Node>().distanceMoved = distanceMoved;
                         adjacentNodes[i].GetComponent<Node>().distanceFromTarget = distanceFromTarget;
                         adjacentNodes[i].GetComponent<Node>().moveCost = distanceMoved + distanceFromTarget;

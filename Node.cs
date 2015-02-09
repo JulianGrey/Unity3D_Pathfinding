@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Node : MonoBehaviour {
 
+    public GameObject parentNode = null;
+
     public int distanceFromTarget;
     public int distanceMoved;
     public int moveCost;
