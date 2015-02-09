@@ -75,6 +75,9 @@ public class UnitMove : MonoBehaviour {
         if(Input.GetMouseButtonDown(1)) {
             if(Physics.Raycast(ray, out hit)) {
                 if(hit.collider.tag == "Node" && hit.collider.gameObject.GetComponent<Node>().walkable) {
+                    for(var i = 0; i < nodeList.Count; i++) {
+                        nodeList[i].GetComponent<Node>().distanceMoved = 0;
+                    }
                     nextCell = 0;
                     targetReached = false;
                     canSearch = true;
