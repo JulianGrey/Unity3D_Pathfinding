@@ -28,7 +28,6 @@ public class Pathfinding : MonoBehaviour {
             if(openList.Count == 0 && closedList.Count == 0) {
                 closedList.Add(currentNode);
             }
-
             List<GameObject> adjacentNodes = FindAdjacentNodes(currentNode, nodeList, openList, closedList);
             int minNodeValue = 0;
             nextNode = null;
@@ -45,8 +44,8 @@ public class Pathfinding : MonoBehaviour {
                 adjacentNodes[i].GetComponent<Node>().distanceFromTarget = distanceFromTarget;
                 adjacentNodes[i].GetComponent<Node>().moveCost = adjacentNodes[i].GetComponent<Node>().distanceMoved + distanceFromTarget;
                 openList.Add(adjacentNodes[i]);
-                minNodeValue = GetLowestNodeValue(openList);
             }
+            minNodeValue = GetLowestNodeValue(openList);
             nextNode = GetNextNode(openList, minNodeValue);
             closedList.Add(nextNode);
             openList.Remove(nextNode);
@@ -112,18 +111,21 @@ public class Pathfinding : MonoBehaviour {
             }
         }
         if(nextNodeList.Count > 1) {
-            int minDistanceMoved = 0;
+            int minDistanceFromTarget = 0;
             GameObject consideredNode = null;
 
             for(var i = 0; i < nextNodeList.Count; i++) {
                 if(i == 0) {
-                    minDistanceMoved = nextNodeList[i].GetComponent<Node>().distanceMoved;
+                    minDistanceFromTarget = nextNodeList[i].GetComponent<Node>().distanceFromTarget;
                     consideredNode = nextNodeList[i];
                 }
                 else {
-                    if(nextNodeList[i].GetComponent<Node>().distanceMoved < minDistanceMoved) {
-                        minDistanceMoved = nextNodeList[i].GetComponent<Node>().distanceMoved;
+                    if(nextNodeList[i].GetComponent<Node>().distanceFromTarget < minDistanceFromTarget) {
+                        minDistanceFromTarget = nextNodeList[i].GetComponent<Node>().distanceFromTarget;
                         consideredNode = nextNodeList[i];
+                    }
+                    else if(nextNodeList[i].GetComponent<Node>().distanceFromTarget == minDistanceFromTarget) {
+                        consideredNode = nextNodeList[nextNodeList.Count - 1];
                     }
                 }
             }
