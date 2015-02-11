@@ -19,7 +19,7 @@ public class Node : MonoBehaviour {
         int targetX = targetNode.GetComponent<Node>().x;
         int targetY = targetNode.GetComponent<Node>().y;
 
-        return (Mathf.Abs(x - targetX) + Mathf.Abs(y - targetY));
+        return ((Mathf.Abs(x - targetX) + Mathf.Abs(y - targetY)) * 10);
     }
 
 

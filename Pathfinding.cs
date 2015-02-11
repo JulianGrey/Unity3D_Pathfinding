@@ -36,10 +36,15 @@ public class Pathfinding : MonoBehaviour {
                 int distanceFromTarget = adjacentNodes[i].GetComponent<Node>().FindDistanceToTarget(adjacentNodes[i].GetComponent<Node>().x, adjacentNodes[i].GetComponent<Node>().y, targetNode);
                 adjacentNodes[i].GetComponent<Node>().parentNode = currentNode;
                 if(currentNode.GetComponent<Node>().parentNode != null) {
-                    adjacentNodes[i].GetComponent<Node>().distanceMoved = currentNode.GetComponent<Node>().distanceMoved + 1;
+                    if(Mathf.Abs((adjacentNodes[i].GetComponent<Node>().x - currentNode.GetComponent<Node>().x) + (adjacentNodes[i].GetComponent<Node>().y - currentNode.GetComponent<Node>().y)) == 1) {
+                        adjacentNodes[i].GetComponent<Node>().distanceMoved = currentNode.GetComponent<Node>().distanceMoved * 10;
+                    }
+                    else {
+                        adjacentNodes[i].GetComponent<Node>().distanceMoved = currentNode.GetComponent<Node>().distanceMoved * 14;
+                    }
                 }
                 else {
-                    adjacentNodes[i].GetComponent<Node>().distanceMoved = 1;
+                    adjacentNodes[i].GetComponent<Node>().distanceMoved = 10;
                 }
                 adjacentNodes[i].GetComponent<Node>().distanceFromTarget = distanceFromTarget;
                 adjacentNodes[i].GetComponent<Node>().moveCost = adjacentNodes[i].GetComponent<Node>().distanceMoved + distanceFromTarget;
@@ -65,21 +70,40 @@ public class Pathfinding : MonoBehaviour {
         List<GameObject> nodes = new List<GameObject>();
 
         GameObject upNode = nodeList.Find(foundNode => foundNode.GetComponent<Node>().x == currentNodeX && foundNode.GetComponent<Node>().y == currentNodeY + 1 && foundNode.GetComponent<Node>().walkable == true);
+        GameObject upRightNode = nodeList.Find(foundNode => foundNode.GetComponent<Node>().x == currentNodeX + 1 && foundNode.GetComponent<Node>().y == currentNodeY + 1 && foundNode.GetComponent<Node>().walkable == true);
+
         GameObject rightNode = nodeList.Find(foundNode => foundNode.GetComponent<Node>().x == currentNodeX + 1 && foundNode.GetComponent<Node>().y == currentNodeY && foundNode.GetComponent<Node>().walkable == true);
+        GameObject downRightNode = nodeList.Find(foundNode => foundNode.GetComponent<Node>().x == currentNodeX + 1 && foundNode.GetComponent<Node>().y == currentNodeY - 1 && foundNode.GetComponent<Node>().walkable == true);
+
         GameObject downNode = nodeList.Find(foundNode => foundNode.GetComponent<Node>().x == currentNodeX && foundNode.GetComponent<Node>().y == currentNodeY - 1 && foundNode.GetComponent<Node>().walkable == true);
+        GameObject downLeftNode = nodeList.Find(foundNode => foundNode.GetComponent<Node>().x == currentNodeX - 1 && foundNode.GetComponent<Node>().y == currentNodeY - 1 && foundNode.GetComponent<Node>().walkable == true);
+
         GameObject leftNode = nodeList.Find(foundNode => foundNode.GetComponent<Node>().x == currentNodeX - 1 && foundNode.GetComponent<Node>().y == currentNodeY && foundNode.GetComponent<Node>().walkable == true);
+        GameObject upLeftNode = nodeList.Find(foundNode => foundNode.GetComponent<Node>().x == currentNodeX - 1 && foundNode.GetComponent<Node>().y == currentNodeY + 1 && foundNode.GetComponent<Node>().walkable == true);
 
         if(upNode != null && !openList.Contains(upNode) && !closedList.Contains(upNode)) {
             nodes.Add(upNode);
         }
+        if(upRightNode != null && !openList.Contains(upRightNode) && !closedList.Contains(upRightNode)) {
+            nodes.Add(upRightNode);
+        }
         if(rightNode != null && !openList.Contains(rightNode) && !closedList.Contains(rightNode)) {
             nodes.Add(rightNode);
+        }
+        if(downRightNode != null && !openList.Contains(downRightNode) && !closedList.Contains(downRightNode)) {
+            nodes.Add(downRightNode);
         }
         if(downNode != null && !openList.Contains(downNode) && !closedList.Contains(downNode)) {
             nodes.Add(downNode);
         }
+        if(downLeftNode != null && !openList.Contains(downLeftNode) && !closedList.Contains(downLeftNode)) {
+            nodes.Add(downLeftNode);
+        }
         if(leftNode != null && !openList.Contains(leftNode) && !closedList.Contains(leftNode)) {
             nodes.Add(leftNode);
+        }
+        if(upLeftNode != null && !openList.Contains(upLeftNode) && !closedList.Contains(upLeftNode)) {
+            nodes.Add(upLeftNode);
         }
         return nodes;
     }
