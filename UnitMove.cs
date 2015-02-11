@@ -10,7 +10,7 @@ public class UnitMove : MonoBehaviour {
     public List<GameObject> closedList = new List<GameObject>();
     public List<GameObject> nodeList = new List<GameObject>();
 
-    public int nextCell = 0;
+    public int nextNode = 0;
 
     public float moveSpeed = 3.0f;
 
@@ -58,11 +58,11 @@ public class UnitMove : MonoBehaviour {
     void MoveToTarget() {
 
         float step = moveSpeed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, closedList[nextCell].transform.position, step);
-        transform.LookAt(closedList[nextCell].transform.position);
+        transform.position = Vector3.MoveTowards(transform.position, closedList[nextNode].transform.position, step);
+        transform.LookAt(closedList[nextNode].transform.position);
 
-        if(transform.position == closedList[nextCell].transform.position) {
-            nextCell++;
+        if(transform.position == closedList[nextNode].transform.position) {
+            nextNode++;
         }
     }
 
@@ -74,14 +74,16 @@ public class UnitMove : MonoBehaviour {
 
         if(Input.GetMouseButtonDown(1)) {
             if(Physics.Raycast(ray, out hit)) {
-                if(hit.collider.tag == "Node" && hit.collider.gameObject.GetComponent<Node>().walkable) {
-                    for(var i = 0; i < nodeList.Count; i++) {
-                        nodeList[i].GetComponent<Node>().distanceMoved = 0;
+                if(hit.collider.gameObject != previousNode) {
+                    if(hit.collider.tag == "Node" && hit.collider.gameObject.GetComponent<Node>().walkable) {
+                        for(var i = 0; i < nodeList.Count; i++) {
+                            nodeList[i].GetComponent<Node>().distanceMoved = 0;
+                        }
+                        nextNode = 0;
+                        targetReached = false;
+                        canSearch = true;
+                        targetNode = hit.collider.gameObject;
                     }
-                    nextCell = 0;
-                    targetReached = false;
-                    canSearch = true;
-                    targetNode = hit.collider.gameObject;
                 }
             }
         }
