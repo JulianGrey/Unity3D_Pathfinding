@@ -8,6 +8,8 @@ public class Node : MonoBehaviour {
     public int distanceFromTarget;
     public int distanceMoved;
     public int moveCost;
+    public int nodeResist;
+    public int nodeType = 1;
     public int x;
     public int y;
 
@@ -25,31 +27,33 @@ public class Node : MonoBehaviour {
 
     void Update() {
 
+        SetNodeType();
         if(Input.GetMouseButtonDown(0)) {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if(Physics.Raycast(ray, out hit)) {
                 if(hit.collider.name == this.gameObject.name) {
-                    if(walkable == true) {
-                        walkable = false;
-                    }
-                    else {
-                        walkable = true;
+                    this.nodeType++;
+                    if(nodeType > 1) {
+                        nodeType = 0;
                     }
                 }
             }
         }
-        SetNodeColour();
     }
 
 
-    void SetNodeColour() {
+    void SetNodeType() {
 
-        if(walkable == true) {
-            transform.Find("Sphere").renderer.material.color = Color.red;
-        }
-        else {
+        if(nodeType == 0) {
             transform.Find("Sphere").renderer.material.color = Color.black;
+            nodeResist = 0;
+            walkable = false;
+        }
+        else if (nodeType == 1) {
+            transform.Find("Sphere").renderer.material.color = Color.green;
+            nodeResist = 1;
+            walkable = true;
         }
     }
 }
