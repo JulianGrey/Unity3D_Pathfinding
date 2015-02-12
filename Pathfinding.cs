@@ -37,10 +37,10 @@ public class Pathfinding : MonoBehaviour {
                 adjacentNodes[i].GetComponent<Node>().parentNode = currentNode;
                 if(currentNode.GetComponent<Node>().parentNode != null) {
                     if(Mathf.Abs((adjacentNodes[i].GetComponent<Node>().x - currentNode.GetComponent<Node>().x) + (adjacentNodes[i].GetComponent<Node>().y - currentNode.GetComponent<Node>().y)) == 1) {
-                        adjacentNodes[i].GetComponent<Node>().distanceMoved = currentNode.GetComponent<Node>().distanceMoved * 10;
+                        adjacentNodes[i].GetComponent<Node>().distanceMoved = currentNode.GetComponent<Node>().distanceMoved + (adjacentNodes[i].GetComponent<Node>().nodeResist * 10);
                     }
                     else {
-                        adjacentNodes[i].GetComponent<Node>().distanceMoved = currentNode.GetComponent<Node>().distanceMoved * 14;
+                        adjacentNodes[i].GetComponent<Node>().distanceMoved = currentNode.GetComponent<Node>().distanceMoved + (adjacentNodes[i].GetComponent<Node>().nodeResist * 14);
                     }
                 }
                 else {
