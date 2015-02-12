@@ -84,26 +84,34 @@ public class Pathfinding : MonoBehaviour {
         if(upNode != null && !openList.Contains(upNode) && !closedList.Contains(upNode)) {
             nodes.Add(upNode);
         }
-        if(upRightNode != null && !openList.Contains(upRightNode) && !closedList.Contains(upRightNode)) {
-            nodes.Add(upRightNode);
-        }
         if(rightNode != null && !openList.Contains(rightNode) && !closedList.Contains(rightNode)) {
             nodes.Add(rightNode);
-        }
-        if(downRightNode != null && !openList.Contains(downRightNode) && !closedList.Contains(downRightNode)) {
-            nodes.Add(downRightNode);
         }
         if(downNode != null && !openList.Contains(downNode) && !closedList.Contains(downNode)) {
             nodes.Add(downNode);
         }
-        if(downLeftNode != null && !openList.Contains(downLeftNode) && !closedList.Contains(downLeftNode)) {
-            nodes.Add(downLeftNode);
-        }
         if(leftNode != null && !openList.Contains(leftNode) && !closedList.Contains(leftNode)) {
             nodes.Add(leftNode);
         }
-        if(upLeftNode != null && !openList.Contains(upLeftNode) && !closedList.Contains(upLeftNode)) {
-            nodes.Add(upLeftNode);
+        if(nodes.Contains(upNode) && nodes.Contains(rightNode)) {
+            if(upRightNode != null && !openList.Contains(upRightNode) && !closedList.Contains(upRightNode)) {
+                nodes.Add(upRightNode);
+            }
+        }
+        if(nodes.Contains(downNode) && nodes.Contains(rightNode)) {
+            if(downRightNode != null && !openList.Contains(downRightNode) && !closedList.Contains(downRightNode)) {
+                nodes.Add(downRightNode);
+            }
+        }
+        if(nodes.Contains(downNode) && nodes.Contains(leftNode)) {
+            if(downLeftNode != null && !openList.Contains(downLeftNode) && !closedList.Contains(downLeftNode)) {
+                nodes.Add(downLeftNode);
+            }
+        }
+        if(nodes.Contains(upNode) && nodes.Contains(leftNode)) {
+            if(upLeftNode != null && !openList.Contains(upLeftNode) && !closedList.Contains(upLeftNode)) {
+                nodes.Add(upLeftNode);
+            }
         }
         return nodes;
     }
