@@ -34,7 +34,7 @@ public class Node : MonoBehaviour {
             if(Physics.Raycast(ray, out hit)) {
                 if(hit.collider.name == this.gameObject.name) {
                     this.nodeType++;
-                    if(nodeType > 1) {
+                    if(nodeType > 2) {
                         nodeType = 0;
                     }
                 }
@@ -45,15 +45,22 @@ public class Node : MonoBehaviour {
 
     void SetNodeType() {
 
-        if(nodeType == 0) {
-            transform.Find("Sphere").renderer.material.color = Color.black;
-            nodeResist = 0;
-            walkable = false;
-        }
-        else if (nodeType == 1) {
-            transform.Find("Sphere").renderer.material.color = Color.green;
-            nodeResist = 1;
-            walkable = true;
+        switch(nodeType) {
+            case 0:
+                transform.Find("Sphere").renderer.material.color = Color.black;
+                nodeResist = 0;
+                walkable = false;
+                break;
+            case 1:
+                transform.Find("Sphere").renderer.material.color = Color.green;
+                nodeResist = 1;
+                walkable = true;
+                break;
+            case 2:
+                transform.Find("Sphere").renderer.material.color = Color.blue;
+                nodeResist = 6;
+                walkable = true;
+                break;
         }
     }
 }
