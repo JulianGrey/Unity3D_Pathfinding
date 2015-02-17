@@ -47,17 +47,17 @@ public class Node : MonoBehaviour {
 
         switch(nodeType) {
             case 0:
-                transform.Find("Sphere").renderer.material.color = Color.black;
-                nodeResist = 0;
-                walkable = false;
-                break;
-            case 1:
-                transform.Find("Sphere").renderer.material.color = Color.green;
+                transform.Find("Model").renderer.material.color = Color.green;
                 nodeResist = 1;
                 walkable = true;
                 break;
+            case 1:
+                transform.Find("Model").renderer.material.color = Color.black;
+                nodeResist = 0;
+                walkable = false;
+                break;
             case 2:
-                transform.Find("Sphere").renderer.material.color = Color.blue;
+                transform.Find("Model").renderer.material.color = Color.blue;
                 nodeResist = 6;
                 walkable = true;
                 break;
