@@ -20,7 +20,10 @@ public class GameControl : MonoBehaviour {
 
     void Update() {
         if(!unitSpawned) {
-            Instantiate(unit, new Vector3(startNode.transform.position.x, startNode.transform.position.y, startNode.transform.position.z), Quaternion.identity);
+            GameObject player;
+            player = Instantiate(unit, new Vector3(startNode.transform.position.x, startNode.transform.position.y, startNode.transform.position.z), Quaternion.identity) as GameObject;
+            GameObject.Find("Main Camera").GetComponent<MoveCamera>().player = player;
+            GameObject.Find("Main Camera").GetComponent<MoveCamera>().enabled = true;
             unitSpawned = true;
         }
     }
