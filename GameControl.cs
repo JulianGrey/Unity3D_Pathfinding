@@ -8,6 +8,7 @@ public class GameControl : MonoBehaviour {
     public GameObject unit;
 
     public List<GameObject> nodeList = new List<GameObject>();
+    public List<GameObject> walkableNodeList = new List<GameObject>();
 
     public int unitsSpawned = 0;
     public int maxNumberOfUnits = 1;
@@ -17,7 +18,13 @@ public class GameControl : MonoBehaviour {
 
     void Start() {
         nodeList = transform.GetComponent<BuildMap>().nodeList;
-        startNode = nodeList.Find(node => node.GetComponent<Node>().x == 8 && node.GetComponent<Node>().y == 1);
+        for(var i = 0; i < nodeList.Count; i++) {
+            if(nodeList[i].GetComponent<Node>().walkable) {
+                walkableNodeList.Add(nodeList[i]);
+            }
+        }
+        int randomNode = Mathf.RoundToInt(Random.value * walkableNodeList.Count);
+        startNode = walkableNodeList[randomNode];
     }
 
 
