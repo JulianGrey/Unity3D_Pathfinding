@@ -9,6 +9,9 @@ public class GameControl : MonoBehaviour {
 
     public List<GameObject> nodeList = new List<GameObject>();
 
+    public int unitsSpawned = 0;
+    public int maxNumberOfUnits = 1;
+
     public bool unitSpawned = false;
 
 
@@ -19,12 +22,13 @@ public class GameControl : MonoBehaviour {
 
 
     void Update() {
-        if(!unitSpawned) {
+        if(unitsSpawned < maxNumberOfUnits) {
             GameObject player;
             player = Instantiate(unit, new Vector3(startNode.transform.position.x, startNode.transform.position.y, startNode.transform.position.z), Quaternion.identity) as GameObject;
+            player.name = "Unit " + (unitsSpawned + 1);
+            unitsSpawned++;
             GameObject.Find("Main Camera").GetComponent<MoveCamera>().player = player;
             GameObject.Find("Main Camera").GetComponent<MoveCamera>().enabled = true;
-            unitSpawned = true;
         }
     }
 }
