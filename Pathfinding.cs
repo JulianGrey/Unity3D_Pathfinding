@@ -58,6 +58,12 @@ public class Pathfinding : MonoBehaviour {
         }
         completeList = FindCompletePath(closedList, initialNode);
         completeList.Reverse();
+        for(var i = 0; i < openList.Count; i++) {
+            openList[i].GetComponent<Node>().distanceMoved = 0;
+        }
+        for(var i = 0; i < closedList.Count; i++) {
+            closedList[i].GetComponent<Node>().distanceMoved = 0;
+        }
         return completeList;
     }
 

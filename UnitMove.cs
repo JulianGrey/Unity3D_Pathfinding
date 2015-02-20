@@ -9,20 +9,29 @@ public class UnitMove : MonoBehaviour {
 
     public List<GameObject> closedList = new List<GameObject>();
     public List<GameObject> nodeList = new List<GameObject>();
+    public List<GameObject> walkableNodeList = new List<GameObject>();
 
     public int nextNode = 0;
+    public int numWalkableNodes = 0;
 
-    public float moveSpeed = 3.0f;
+    public float moveSpeed = 10.0f;
 
     public bool canSearch = true;
     public bool pathFound = false;
-    public bool targetReached = false;
+    public bool targetReached;
 
 
     void Start() {
 
         nodeList = GameObject.Find("Level").GetComponent<BuildMap>().nodeList;
+        for(var i = 0; i < nodeList.Count; i++) {
+            if(nodeList[i].GetComponent<Node>().walkable) {
+                walkableNodeList.Add(nodeList[i]);
+            }
+        }
+        numWalkableNodes = walkableNodeList.Count;
         transform.GetComponent<Pathfinding>().enabled = true;
+        targetReached = true;
     }
 
 
@@ -34,7 +43,10 @@ public class UnitMove : MonoBehaviour {
 
     void Update() {
 
-        SetNewTarget();
+        // SetNewTarget();
+        if(targetReached) {
+            SetAutomatedTarget();
+        }
         if(targetNode) {
             if(canSearch) {
                 transform.GetComponent<Pathfinding>().targetNode = targetNode;
@@ -76,9 +88,6 @@ public class UnitMove : MonoBehaviour {
             if(Physics.Raycast(ray, out hit)) {
                 if(hit.collider.gameObject != previousNode) {
                     if(hit.collider.tag == "Node" && hit.collider.gameObject.GetComponent<Node>().walkable) {
-                        for(var i = 0; i < nodeList.Count; i++) {
-                            nodeList[i].GetComponent<Node>().distanceMoved = 0;
-                        }
                         nextNode = 0;
                         targetReached = false;
                         canSearch = true;
@@ -87,5 +96,14 @@ public class UnitMove : MonoBehaviour {
                 }
             }
         }
+    }
+
+    void SetAutomatedTarget() {
+
+        int randomNode = Mathf.RoundToInt(Random.value * numWalkableNodes);
+        nextNode = 0;
+        targetReached = false;
+        canSearch = true;
+        targetNode = walkableNodeList[randomNode];
     }
 }
