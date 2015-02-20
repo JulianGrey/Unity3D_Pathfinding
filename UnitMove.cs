@@ -101,9 +101,11 @@ public class UnitMove : MonoBehaviour {
     void SetAutomatedTarget() {
 
         int randomNode = Mathf.RoundToInt(Random.value * numWalkableNodes);
-        nextNode = 0;
-        targetReached = false;
-        canSearch = true;
-        targetNode = walkableNodeList[randomNode];
+        if(walkableNodeList[randomNode] != targetNode) {
+            nextNode = 0;
+            targetReached = false;
+            canSearch = true;
+            targetNode = walkableNodeList[randomNode];
+        }
     }
 }
