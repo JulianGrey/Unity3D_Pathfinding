@@ -98,6 +98,7 @@ public class UnitMove : MonoBehaviour {
         }
     }
 
+
     void SetAutomatedTarget() {
 
         int randomNode = Mathf.RoundToInt(Random.value * numWalkableNodes);
