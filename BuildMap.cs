@@ -6,6 +6,7 @@ public class BuildMap : MonoBehaviour {
 
     public GameObject ground;
     public GameObject wall;
+    public GameObject spawnpoint;
 
     public List<GameObject> nodeList = new List<GameObject>();
 
@@ -42,20 +43,32 @@ public class BuildMap : MonoBehaviour {
 
     void Start() {
 
-        CreateStringMap();
+        BuildMapFromArray();
         transform.GetComponent<GameControl>().enabled = true;
     }
 
-    void CreateStringMap() {
+    
+    void BuildMapFromArray() {
 
         GameObject mapNode;
         for(var j = 0; j < myMap.GetLength(0); j++) {
             for(var i = 0; i < myMap.GetLength(1); i++) {
                 if(myMap[j, i] == 1) {
                     mapNode = Instantiate(wall, new Vector3(i * 1.0f, 0, j * -1.0f), Quaternion.identity) as GameObject;
+                    mapNode.GetComponent<Node>().walkable = false;
+                    mapNode.transform.Find("Model").renderer.material.color = Color.black;
                 }
                 else {
                     mapNode = Instantiate(ground, new Vector3(i * 1.0f, 0, j * -1.0f), Quaternion.identity) as GameObject;
+                    mapNode.GetComponent<Node>().walkable = true;
+                    if(myMap[j, i] == 0) {
+                        mapNode.transform.Find("Model").renderer.material.color = Color.green;
+                        mapNode.GetComponent<Node>().nodeResist = 1;
+                    }
+                    else if(myMap[j, i] == 2) {
+                        mapNode.transform.Find("Model").renderer.material.color = Color.blue;
+                        mapNode.GetComponent<Node>().nodeResist = 6;
+                    }
                 }
                 mapNode.name = "Node (" + i + ", " + j + ")";
                 mapNode.GetComponent<Node>().x = i;
