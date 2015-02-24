@@ -7,7 +7,7 @@ public class Pathfinding : MonoBehaviour {
     public GameObject nextNode;
     public GameObject targetNode;
 
-    public List<GameObject> nodeList = new List<GameObject>();
+    public List<GameObject> nodeList;
 
 
     void Start() {

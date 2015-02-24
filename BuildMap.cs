@@ -12,8 +12,9 @@ public class BuildMap : MonoBehaviour {
     public List<GameObject> walkableNodeList = new List<GameObject>();
     public List<GameObject> spawnPointList = new List<GameObject>();
 
-    public int maxNumSpawnPoints = 3;
-    public int[,] myMap = {
+    public int numWalkableNodes;
+    private int maxNumSpawnPoints = 3;
+    private int[,] myMap = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 1},
         {1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 2, 2, 2, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 2, 2, 2, 1},
@@ -98,5 +99,6 @@ public class BuildMap : MonoBehaviour {
             spawnNode.name = "Spawnpoint " + (i + 1);
             spawnPointList.Add(spawnNode);
         }
+        numWalkableNodes = walkableNodeList.Count;
     }
-}       
+}

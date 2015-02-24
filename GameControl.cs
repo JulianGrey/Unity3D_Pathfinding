@@ -4,25 +4,19 @@ using System.Collections.Generic;
 
 public class GameControl : MonoBehaviour {
 
-    public GameObject startNode;
+    private GameObject startNode;
     public GameObject unit;
 
-    public List<GameObject> nodeList = new List<GameObject>();
-    public List<GameObject> walkableNodeList = new List<GameObject>();
+    private List<GameObject> nodeList;
+    private List<GameObject> walkableNodeList;
 
-    public int unitsSpawned = 0;
-    public int maxNumberOfUnits = 1;
-
-    public bool unitSpawned = false;
+    private int unitsSpawned = 0;
+    private int maxNumberOfUnits = 1;
 
 
     void Start() {
         nodeList = transform.GetComponent<BuildMap>().nodeList;
-        for(var i = 0; i < nodeList.Count; i++) {
-            if(nodeList[i].GetComponent<Node>().walkable) {
-                walkableNodeList.Add(nodeList[i]);
-            }
-        }
+        walkableNodeList = transform.GetComponent<BuildMap>().walkableNodeList;
         int randomNode = Mathf.RoundToInt(Random.value * walkableNodeList.Count);
         startNode = walkableNodeList[randomNode];
     }

@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 public class UnitMove : MonoBehaviour {
 
-    public GameObject previousNode;
-    public GameObject targetNode;
+    private GameObject previousNode;
+    private GameObject targetNode;
 
-    public List<GameObject> closedList = new List<GameObject>();
-    public List<GameObject> nodeList = new List<GameObject>();
-    public List<GameObject> walkableNodeList = new List<GameObject>();
+    private List<GameObject> closedList;
+    private List<GameObject> nodeList;
+    private List<GameObject> walkableNodeList;
 
     public int nextNode = 0;
-    public int numWalkableNodes = 0;
+    public int numWalkableNodes;
 
     public float moveSpeed = 10.0f;
 
@@ -24,12 +24,8 @@ public class UnitMove : MonoBehaviour {
     void Start() {
 
         nodeList = GameObject.Find("Level").GetComponent<BuildMap>().nodeList;
-        for(var i = 0; i < nodeList.Count; i++) {
-            if(nodeList[i].GetComponent<Node>().walkable) {
-                walkableNodeList.Add(nodeList[i]);
-            }
-        }
-        numWalkableNodes = walkableNodeList.Count;
+        walkableNodeList = GameObject.Find("Level").GetComponent<BuildMap>().walkableNodeList;
+        numWalkableNodes = GameObject.Find("Level").GetComponent<BuildMap>().numWalkableNodes;
         transform.GetComponent<Pathfinding>().enabled = true;
         targetReached = true;
     }
