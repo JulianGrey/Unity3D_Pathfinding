@@ -6,10 +6,13 @@ public class BuildMap : MonoBehaviour {
 
     public GameObject ground;
     public GameObject wall;
-    public GameObject spawnpoint;
+    public GameObject spawnPoint;
 
     public List<GameObject> nodeList = new List<GameObject>();
+    public List<GameObject> walkableNodeList = new List<GameObject>();
+    public List<GameObject> spawnPointList = new List<GameObject>();
 
+    public int maxNumSpawnPoints = 3;
     public int[,] myMap = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 1},
@@ -44,6 +47,7 @@ public class BuildMap : MonoBehaviour {
     void Start() {
 
         BuildMapFromArray();
+        SetSpawnPoint();
         transform.GetComponent<GameControl>().enabled = true;
     }
 
@@ -78,4 +82,21 @@ public class BuildMap : MonoBehaviour {
             }
         }
     }
-}
+
+
+    void SetSpawnPoint() {
+
+        GameObject spawnNode;
+        for(var i = 0; i < nodeList.Count; i++) {
+            if(nodeList[i].GetComponent<Node>().walkable) {
+                walkableNodeList.Add(nodeList[i]);
+            }
+        }
+        for(var i = 0; i < maxNumSpawnPoints; i++) {
+            int randomNode = Mathf.RoundToInt(Random.value * walkableNodeList.Count);
+            spawnNode = Instantiate(spawnPoint, walkableNodeList[randomNode].transform.position, Quaternion.identity) as GameObject;
+            spawnNode.name = "Spawnpoint " + (i + 1);
+            spawnPointList.Add(spawnNode);
+        }
+    }
+}       
