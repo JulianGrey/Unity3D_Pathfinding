@@ -12,7 +12,7 @@ public class Pathfinding : MonoBehaviour {
 
     void Start() {
 
-        nodeList = GameObject.Find("Level").GetComponent<BuildMap>().nodeList;
+        nodeList = GameObject.Find("Level").GetComponent<GameControl>().nodeList;
     }
 
 

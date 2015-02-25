@@ -23,9 +23,9 @@ public class UnitMove : MonoBehaviour {
 
     void Start() {
 
-        nodeList = GameObject.Find("Level").GetComponent<BuildMap>().nodeList;
-        walkableNodeList = GameObject.Find("Level").GetComponent<BuildMap>().walkableNodeList;
-        numWalkableNodes = GameObject.Find("Level").GetComponent<BuildMap>().numWalkableNodes;
+        nodeList = GameObject.Find("Level").GetComponent<GameControl>().nodeList;
+        walkableNodeList = GameObject.Find("Level").GetComponent<GameControl>().walkableNodeList;
+        numWalkableNodes = GameObject.Find("Level").GetComponent<GameControl>().numWalkableNodes;
         transform.GetComponent<Pathfinding>().enabled = true;
         targetReached = true;
     }
@@ -98,11 +98,19 @@ public class UnitMove : MonoBehaviour {
     void SetAutomatedTarget() {
 
         int randomNode = Mathf.RoundToInt(Random.value * numWalkableNodes);
-        if(walkableNodeList[randomNode] != targetNode) {
-            nextNode = 0;
-            targetReached = false;
-            canSearch = true;
-            targetNode = walkableNodeList[randomNode];
+        if(randomNode < numWalkableNodes) {
+            if(walkableNodeList[randomNode] != targetNode) {
+                nextNode = 0;
+                targetReached = false;
+                canSearch = true;
+                targetNode = walkableNodeList[randomNode];
+            }
+            else {
+                SetAutomatedTarget();
+            }
+        }
+        else {
+            SetAutomatedTarget();
         }
     }
 }
